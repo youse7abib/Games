@@ -5,6 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Meteor Dodge Game</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;700&display=swap" rel="stylesheet">
     <style>
         * {
@@ -19,6 +20,17 @@
             display: flex;
             flex-direction: column;
             min-height: 100vh;
+            animation: fadeIn 1s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
         }
 
         header {
@@ -74,6 +86,9 @@
             padding: 20px;
             background-color: #111;
             color: #ccc;
+            width: 100%;
+            bottom: 0;
+            left: 0;
         }
 
         #stars {
@@ -82,7 +97,92 @@
             left: 0;
             z-index: -1;
         }
+
+        .section {
+            margin: 30px auto;
+            max-width: 600px;
+        }
+
+        .section h2 {
+            color: #00ffff;
+        }
+
+        .share-container {
+            position: relative;
+            margin-top: 20px;
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .share-btn {
+            background-color: #00ffff;
+            color: #000;
+            border: none;
+            padding: 12px 25px;
+            font-size: 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            text-shadow: 1px 1px #fff;
+            box-shadow: 0 0 10px #00ffff;
+            transition: background-color 0.3s;
+        }
+
+
+        .share-btn:hover {
+            background-color: #00c9c9;
+            box-shadow: 0 0 20px #00ffff;
+        }
+
+        .share-options {
+            display: none;
+            position: absolute;
+            top: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #222;
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+            text-align: center;
+            z-index: 1000;
+
+        }
+
+        .share-options a {
+            display: block;
+            color: #00ffff;
+            padding: 5px 10px;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+
+        .share-options a:hover {
+            color: #fff;
+            background-color: #00c9c9;
+            border-radius: 5px;
+        }
+
+        .fade-in {
+            animation: fadeInUp 1s ease forwards;
+            opacity: 0;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
     </style>
+
 </head>
 
 <body>
@@ -90,15 +190,29 @@
         <h1>Meteor Dodge</h1>
     </header>
     <main>
-        <video width="600" controls
-            style="border-radius: 10px; box-shadow: 0 4px 20px rgba(0, 255, 255, 0.3); margin: 20px 0;">
-            <source src="ship it.mp4" type="video/mp4">
-        </video>
-        <img class="screenshot" src="highscore.png" alt="Game Screenshot" />
+        </video><img class="screenshot" src="highscore.png" alt="Game Screenshot" />
+
         <p>تحميل لعبة الأكشن والإثارة Meteor Dodge الآن!<br>قاتل النيازك، اجمع النقاط، وابقَ على قيد الحياة!</p>
-        <a href="http://www.mediafire.com/file/qeu9tcy9sjxy54f/SpaceDodge.zip" class="download-btn" download>⬇ Download
-            Game</a>
+
+
+        <!-- زر الشير -->
+        <div class="share-container">
+            <a href="SpaceDodge.zip" class="download-btn" download>⬇ Download</a>
+
+            <button class="share-btn" onclick="toggleShare()">📤 Share</button>
+            <div class="share-options" id="share-options">
+                <a href="https://www.facebook.com/sharer/sharer.php?u=https://yourgame.link"
+                    target="_blank">facebook</a>
+                <a href="https://twitter.com/intent/tweet?url=https://yourgame.link&text=جرب لعبة Meteor Dodge الرهيبة!"
+                    target="_blank">Twitter</a>
+                <a href="https://wa.me/?text=https://yourgame.link" target="_blank">Whatsapp</a>
+                <a href="https://t.me/share/url?url=https://yourgame.link" target="_blank">Telegram</a>
+            </div>
+        </div>
+
+
     </main>
+
     <footer>
         &copy; 2025 Yousef Habib. جميع الحقوق محفوظة.
     </footer>
@@ -124,10 +238,11 @@
         function drawStars() {
             ctx.clearRect(0, 0, w, h);
             for (let star of stars) {
-                ctx.drawImage(starImg, star.x, star.y, star.r * 5, star.r * 5); // بحجم مناسب
+                ctx.drawImage(starImg, star.x, star.y, star.r * 5, star.r * 5);
             }
             moveStars();
         }
+
         function moveStars() {
             for (let star of stars) {
                 star.y += star.d;
@@ -149,6 +264,21 @@
             w = canvas.width = window.innerWidth;
             h = canvas.height = window.innerHeight;
         });
+
+        function toggleShare() {
+            const menu = document.getElementById("share-options");
+            menu.style.display = (menu.style.display === "block") ? "none" : "block";
+        }
+
+        // يقفل القائمة لو ضغطت بره الزر
+        window.addEventListener("click", function (e) {
+            const btn = document.querySelector(".share-btn");
+            const options = document.getElementById("share-options");
+            if (!btn.contains(e.target) && !options.contains(e.target)) {
+                options.style.display = "none";
+            }
+        });
+
     </script>
 
 </body>
