@@ -170,6 +170,19 @@
             opacity: 0;
         }
 
+        .dwatch{
+             background-color: #00ffff;
+            color: #000;
+            border: none;
+            padding: 15px 30px;
+            font-size: 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: 0.3s;
+            box-shadow: 0 0 10px #00ffff;
+        }
+
         @keyframes fadeInUp {
             from {
                 transform: translateY(20px);
@@ -189,9 +202,13 @@
     <header>
         <h1>Meteor Dodge</h1>
     </header>
-    <main>
-        <h2>Watch a vedio for playing</h2>
-        <a href="https://drive.google.com/file/d/1xmsQTurNCVoHdLQzApFnG2f4m9P2yoV9/view?usp=drivesdk" alt="vedio for playing"  class="download-btn">Watch</a>
+    <main> 
+        <div class="dwatch">
+             <h2>Watch a vedio for playing</h2>
+        <a href="https://drive.google.com/file/d/1xmsQTurNCVoHdLQzApFnG2f4m9P2yoV9/view?usp=drivesdk" alt="vedio for playing"  class="watch-btn">Watch</a>
+        
+        </div>
+       
         </video><img class="screenshot" src="highscore.png" alt="Game Screenshot" />
 
         <p>تحميل لعبة الأكشن والإثارة Meteor Dodge الآن!<br>قاتل النيازك، اجمع النقاط، وابقَ على قيد الحياة!</p>
